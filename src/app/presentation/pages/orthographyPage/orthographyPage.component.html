@@ -12,11 +12,15 @@
         [text]="'Hola, bien gracias. ¿Y tú?'"
       ></app-my-message>
 
-      <app-typing-loader></app-typing-loader>
+      <app-typing-loader />
 
     </div>
 
   </div>
 
   <!-- Message Box -->
+  <app-text-message-box
+    placeholder="Escribe aquí lo que deseas"
+    (onMessage)="handleMessage($event)"
+  />
 </div>
