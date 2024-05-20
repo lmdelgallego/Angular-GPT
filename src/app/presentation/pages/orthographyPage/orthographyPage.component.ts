@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { ChatMessageComponent, MyMessageComponent, TextMessageBoxComponent, TextMessageSelectEvent, TextMessageBoxFileComponent, TextMessageBoxSelectComponent, TextMessageEvent, TypingLoaderComponent } from '@components/index';
 import { Message } from '@interfaces/index';
+import { OpenAiSerice } from 'app/presentation/services/openai.service';
 
 @Component({
   selector: 'app-orthography-page',
@@ -33,6 +34,7 @@ export default class OrthographyPageComponent {
     }
   ]);
   public isLoading = signal<boolean>(false);
+  public opneAiService = inject( OpenAiSerice)
 
   handleMessage( {prompt, file, selectedOption }: any ) {
 
