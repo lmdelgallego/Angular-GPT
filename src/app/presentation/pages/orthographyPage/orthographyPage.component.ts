@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ChatMessageComponent, MyMessageComponent, TextMessageBoxComponent, TextMessageSelectEvent, TextMessageBoxFileComponent, TextMessageBoxSelectComponent, TextMessageEvent, TypingLoaderComponent } from '@components/index';
+import { Message } from '@interfaces/index';
 
 @Component({
   selector: 'app-orthography-page',
@@ -18,6 +19,20 @@ import { ChatMessageComponent, MyMessageComponent, TextMessageBoxComponent, Text
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class OrthographyPageComponent {
+
+
+  public messages = signal<Message[]>([
+    {
+      text: 'Hello! I am a GPT-3 model. I can help you with your orthography. Please upload a text file or type a message.',
+      isGpt: true,
+
+    },
+    {
+      text: 'Hello! GPT, I have a question about the word "orthography".',
+      isGpt: false,
+    }
+  ]);
+  public isLoading = signal<boolean>(false);
 
   handleMessage( {prompt, file, selectedOption }: any ) {
 
