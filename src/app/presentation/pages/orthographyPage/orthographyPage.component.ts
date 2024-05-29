@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { ChatMessageComponent, MyMessageComponent, TextMessageBoxComponent, TextMessageSelectEvent, TextMessageBoxFileComponent, TextMessageBoxSelectComponent, TextMessageEvent, TypingLoaderComponent } from '@components/index';
+import { ChatMessageComponent, MyMessageComponent, TextMessageBoxComponent, TextMessageSelectEvent, TextMessageBoxFileComponent, TextMessageBoxSelectComponent, TextMessageEvent, TypingLoaderComponent, GptMessageOrthographyComponent } from '@components/index';
 import { Message } from '@interfaces/index';
-import { OpenAiSerice } from 'app/presentation/services/openai.service';
+import { OpenAiService } from 'app/presentation/services/openai.service';
 
 @Component({
   selector: 'app-orthography-page',
@@ -15,6 +15,7 @@ import { OpenAiSerice } from 'app/presentation/services/openai.service';
     TextMessageBoxComponent,
     TextMessageBoxFileComponent,
     TextMessageBoxSelectComponent,
+    GptMessageOrthographyComponent
   ],
   templateUrl: './orthographyPage.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,23 +23,41 @@ import { OpenAiSerice } from 'app/presentation/services/openai.service';
 export default class OrthographyPageComponent {
 
 
-  public messages = signal<Message[]>([
-    {
-      text: 'Hello! I am a GPT-3 model. I can help you with your orthography. Please upload a text file or type a message.',
-      isGpt: true,
-
-    },
-    {
-      text: 'Hello! GPT, I have a question about the word "orthography".',
-      isGpt: false,
-    }
-  ]);
+  public messages = signal<Message[]>([]);
   public isLoading = signal<boolean>(false);
-  public opneAiService = inject( OpenAiSerice)
+  public openAiService = inject( OpenAiService)
 
-  handleMessage( {prompt, file, selectedOption }: any ) {
+  handleMessage( prompt: string ) {
 
-    console.log({ prompt, file, selectedOption });
+    this.isLoading.set(true);
+
+    console.log(
+      {
+        isGpt: false,
+        text: prompt,
+      }
+    )
+
+    this.messages.update( (prev) => [
+      ...prev,
+      {
+        isGpt: false,
+        text: prompt,
+      }
+    ]);
+
+    this.openAiService.checkOrthography(prompt)
+      .subscribe( resp => {
+        this.isLoading.set(false);
+        this.messages.update( (prev) => [
+          ...prev,
+          {
+            isGpt: true,
+            text: resp.message,
+            info: resp,
+          }
+        ])
+      })
 
   }
 

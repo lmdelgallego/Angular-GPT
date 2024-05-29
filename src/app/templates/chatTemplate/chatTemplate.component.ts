@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { ReactiveFormsModule } from '@angular/forms';
 import { TypingLoaderComponent, MyMessageComponent, ChatMessageComponent, TextMessageBoxComponent } from '@components/index';
 import { Message } from '@interfaces/message.interface';
-import { OpenAiSerice } from 'app/presentation/services/openai.service';
+import { OpenAiService } from 'app/presentation/services/openai.service';
 
 @Component({
   selector: 'app-chat-template',
@@ -23,7 +23,7 @@ export class ChatTemplateComponent {
 
   public messages = signal<Message[]>([]);
   public isLoading = signal<boolean>(false);
-  public opneAiService = inject( OpenAiSerice)
+  public opneAiService = inject( OpenAiService)
 
   handleMessage( {prompt, file, selectedOption }: any ) {
 

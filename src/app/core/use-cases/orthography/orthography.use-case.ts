@@ -5,7 +5,7 @@ import { environment } from "environments/environment";
 export const orthographyUseCase = async (prompt: string) => {
   try {
 
-    const resp = await fetch(`${environment.backendApi}/orthography-checkt`, {
+    const resp = await fetch(`${environment.backendApi}/orthography-check`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ export const orthographyUseCase = async (prompt: string) => {
     console.log(error);
     return {
       ok: false,
-      useScore: 0,
+      userScore: 0,
       errors: [],
       message: 'No se pudo realizar la corrección',
     }
