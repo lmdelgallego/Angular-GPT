@@ -1,1 +1,7 @@
-<p>audioToTextPage works!</p>,
+<p>audioToTextPage works!</p>
+
+<app-selectable-grid
+  [items]="items"
+  (selectionChange)="handleSelectionChange($event)"
+  [multiSelect]="true"
+/>
